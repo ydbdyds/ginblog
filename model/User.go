@@ -1,8 +1,11 @@
 package model
 
 import (
+	"encoding/base64"
 	"ginblog/utils/errmsg"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/scrypt"
+	"log"
 )
 
 type User struct {
@@ -24,6 +27,7 @@ func CheckUser(name string) (code int) {
 
 //新增用户
 func CreateUser(data *User) int {
+	data.Password = ScryptPw(data.Password)
 	err := db.Create(&data).Error //入参是接口 返回是db模型所以用错误处理来接受
 	if err != nil {
 		return errmsg.ERROR //500
@@ -41,9 +45,21 @@ func GetUsers(pageSize int, pageNum int) []User {
 	return users
 }
 
-////编辑用户
-//func EditUser(id int)(code int)  {
-//
-//}
-//
-////删除用户
+//编辑用户
+
+//删除用户
+
+//密码加密
+func ScryptPw(password string) string {
+	const KLen = 10                                                      //比特数
+	salt := make([]byte, 8)                                              //相当于new一个 容量是8
+	salt = []byte{21, 3, 43, 4, 22, 54, 53, 33}                          //加盐
+	HashPw, err := scrypt.Key([]byte(password), salt, 16384, 8, 1, KLen) //成本参数16384 2^14(必须是2的幂) 这是官方推荐参数 可以随CPU性能增加 最后一位是长度
+	if err != nil {
+		log.Fatal(err) //放在日志中
+	}
+
+	fpassword := base64.StdEncoding.EncodeToString(HashPw) //拿到字符串形式的最后密码
+	return fpassword
+
+}

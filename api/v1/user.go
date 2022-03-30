@@ -57,12 +57,30 @@ func GetUsers(c *gin.Context) {
 	})
 }
 
-//编辑用户
+//编辑用户 检测是否重名
 func EditUser(c *gin.Context) {
-
+	var data model.User
+	id, _ := strconv.Atoi(c.Param("id"))
+	c.ShouldBindJSON(&data)
+	code = model.CheckUser(data.Username) //重名判断
+	if code == errmsg.SUCCESS {
+		model.EditUser(id, &data)
+	}
+	if code == errmsg.ERROR_USERNAME_USED {
+		c.Abort() //返回
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+	})
 }
 
 //删除用户
 func DeleteUser(c *gin.Context) {
-
+	id, _ := strconv.Atoi(c.Param("id"))
+	code = model.DeleteUser(id)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+	})
 }

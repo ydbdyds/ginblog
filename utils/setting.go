@@ -7,8 +7,10 @@ import (
 )
 
 var (
-	AppMode    string
-	HttpPort   string
+	AppMode  string
+	HttpPort string
+	JwtKey   string
+
 	Db         string
 	DbHost     string
 	DbPort     string
@@ -29,6 +31,7 @@ func init() { //使用ini的库做一个处理
 func LoadServer(file *ini.File) {
 	AppMode = file.Section("server").Key("AppMode").MustString("debug") //读[serve]中的appmode 默认参数debug
 	HttpPort = file.Section("server").Key("HttpPort").MustString("3000")
+	JwtKey = file.Section("server").Key("JwtKey").MustString("3h45h3iASs")
 }
 
 func LoadDara(file *ini.File) {

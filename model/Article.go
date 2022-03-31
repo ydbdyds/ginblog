@@ -6,7 +6,7 @@ import (
 )
 
 type Article struct {
-	Category Category //关联
+	Category Category `gorm:"foreignkey:Cid"` //关联 一对多
 	gorm.Model
 	Title   string `gorm:"type:varchar(100);not null" json:"title"`
 	Cid     int    `gorm:"type:int;not null" json:"cid"`
@@ -24,17 +24,34 @@ func CreateArticle(data *Article) int {
 	return errmsg.SUCCESS
 }
 
-//todo 查询分类文章
-//todo 查询文章详情
-
-//todo 查询文章列表 分页处理 要不然一次很多容易卡顿
-func GetArticle(pageSize int, pageNum int) []Article {
-	var article []Article
-	err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&article).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil
+//查询分类文章 根据分类id 返回切片
+func GetCategoryArt(id int, pageSize int, pageNum int) ([]Article, int) {
+	var articleList []Article
+	err := db.Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Where("Cid = ?", id).Find(&articleList).Error
+	if err != nil {
+		return nil, errmsg.ERROR_CATE_NOT_EXIT
 	}
-	return article
+	return articleList, errmsg.SUCCESS
+}
+
+//查询文章详情
+func GetArticleInfo(id int) (Article, int) {
+	var article Article
+	err := db.Preload("Category").Where("id = ?", id).First(&article).Error
+	if err != nil {
+		return Article{}, errmsg.ERROR_ARTICLE_NOT_EXIST //返回空结构体并且报错
+	}
+	return article, errmsg.SUCCESS
+}
+
+//查询文章列表 分页处理 要不然一次很多容易卡顿 通过预加载来加载关联 查找article时就预加载相关分类
+func GetArticle(pageSize int, pageNum int) ([]Article, int) {
+	var articleList []Article
+	err = db.Preload("Category").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&articleList).Error //加入关联字段
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, errmsg.ERROR
+	}
+	return articleList, errmsg.SUCCESS
 }
 
 //编辑分类

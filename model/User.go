@@ -80,5 +80,20 @@ func ScryptPw(password string) string {
 
 	fpassword := base64.StdEncoding.EncodeToString(HashPw) //拿到字符串形式的最后密码
 	return fpassword
+}
 
+//登陆验证
+func CheckLogin(username string, password string) int {
+	var user User
+	db.Where("username = ?", username).First(&user)
+	if user.ID == 0 { //没有这个用户
+		return errmsg.ERROR_USER_NOT_EXIST
+	}
+	if ScryptPw(password) != user.Password { //密码错误
+		return errmsg.ERROR_PASSWORD_WRONG
+	}
+	if user.Role != 0 { //没有管理权限
+		return errmsg.ERROR_USER_NO_RIGHT
+	}
+	return errmsg.SUCCESS
 }

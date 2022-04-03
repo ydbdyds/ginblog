@@ -8,11 +8,11 @@ import (
 	"log"
 )
 
-type User struct {
+type User struct { //考虑到用户可能通过postman这样的工具 直接创建有管理权限的账号 所以需要数据验证
 	gorm.Model
-	Username string `gorm:"type:varchar(20);not null" json:"username"` //用户名
-	Password string `gorm:"type:varchar(20);not null" json:"password"` //密码
-	Role     int    `gorm:"type:int" json:"role"`                      //权限
+	Username string `gorm:"type:varchar(20);not null" json:"username" validate:"required,min=4,max=12" label:"用户名"` //用户名
+	Password string `gorm:"type:varchar(20);not null" json:"password" validate:"required,min=6,max=20" label:"密码"`  //密码
+	Role     int    `gorm:"type:int;DEFAULT:2" json:"role" validate:"required,gte=2" label:"权限"`                    //权限1为管理员 2为普通用户 默认为2
 }
 
 //查询用户是否存在
@@ -92,7 +92,7 @@ func CheckLogin(username string, password string) int {
 	if ScryptPw(password) != user.Password { //密码错误
 		return errmsg.ERROR_PASSWORD_WRONG
 	}
-	if user.Role != 0 { //没有管理权限
+	if user.Role != 1 { //没有管理权限
 		return errmsg.ERROR_USER_NO_RIGHT
 	}
 	return errmsg.SUCCESS

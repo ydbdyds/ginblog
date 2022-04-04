@@ -11,6 +11,7 @@ func InitRouter() {
 	gin.SetMode(utils.AppMode)
 	r := gin.New() //路由初始化
 	r.Use(middleware.Logger())
+	r.Use(middleware.Cors())
 	r.Use(gin.Recovery())
 
 	auth := r.Group("api/v1") //在这个组内需要jwt中间件

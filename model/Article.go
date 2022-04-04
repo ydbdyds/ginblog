@@ -25,13 +25,14 @@ func CreateArticle(data *Article) int {
 }
 
 //查询分类文章 根据分类id 返回切片
-func GetCategoryArt(id int, pageSize int, pageNum int) ([]Article, int) {
+func GetCategoryArt(id int, pageSize int, pageNum int) ([]Article, int, int) {
 	var articleList []Article
-	err := db.Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Where("Cid = ?", id).Find(&articleList).Error
+	var total int
+	err := db.Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Where("Cid = ?", id).Find(&articleList).Count(&total).Error
 	if err != nil {
-		return nil, errmsg.ERROR_CATE_NOT_EXIT
+		return nil, errmsg.ERROR_CATE_NOT_EXIT, 0
 	}
-	return articleList, errmsg.SUCCESS
+	return articleList, errmsg.SUCCESS, total
 }
 
 //查询文章详情
@@ -45,13 +46,14 @@ func GetArticleInfo(id int) (Article, int) {
 }
 
 //查询文章列表 分页处理 要不然一次很多容易卡顿 通过预加载来加载关联 查找article时就预加载相关分类
-func GetArticle(pageSize int, pageNum int) ([]Article, int) {
+func GetArticle(pageSize int, pageNum int) ([]Article, int, int) {
 	var articleList []Article
-	err = db.Preload("Category").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&articleList).Error //加入关联字段
+	var total int
+	err = db.Preload("Category").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&articleList).Count(&total).Error //加入关联字段
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, errmsg.ERROR
+		return nil, errmsg.ERROR, 0
 	}
-	return articleList, errmsg.SUCCESS
+	return articleList, errmsg.SUCCESS, total
 }
 
 //编辑分类

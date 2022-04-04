@@ -31,13 +31,14 @@ func CreateCategory(data *Category) int {
 }
 
 //查询分类列表 分页处理 要不然一次很多容易卡顿
-func GetCategory(pageSize int, pageNum int) []Category {
+func GetCategory(pageSize int, pageNum int) ([]Category, int) {
 	var category []Category
-	err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&category).Error
+	var total int
+	err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&category).Count(&total).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil
+		return nil, 0
 	}
-	return category
+	return category, total
 }
 
 //编辑分类

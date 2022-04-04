@@ -1,4 +1,4 @@
-time="2022-04-04T01:01:43+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=51 HostName=LAPTOP-86TU9QEB IP=127.0.0.1 Method=POST Path=/api/v1/user/add SpendTime="2 ms" status=200
-time="2022-04-04T01:01:58+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=63 HostName=LAPTOP-86TU9QEB IP=127.0.0.1 Method=POST Path=/api/v1/user/add SpendTime="1 ms" status=200
-time="2022-04-04T00:57:42+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=49 HostName=LAPTOP-86TU9QEB IP=127.0.0.1 Method=POST Path=/api/v1/user/add SpendTime="0 ms" status=200
-e="2022-04-03T20:27:27+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=102 HostName=LAPTOP-86TU9QEB IP=127.0.0.1 Method=POST Path=/api/v1/upload SpendTime="287 ms" status=200
+time="2022-04-04T16:01:28+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=873 HostName=LAPTOP-86TU9QEB IP=127.0.0.1 Method=GET Path="/api/v1/users?pagesize=&pagenum=" SpendTime="149 ms" status=200
+time="2022-04-04T16:01:34+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=873 HostName=LAPTOP-86TU9QEB IP=127.0.0.1 Method=GET Path="/api/v1/users?pagesize=&pagenum=" SpendTime="2 ms" status=200
+time="2022-04-04T16:01:45+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=98 HostName=LAPTOP-86TU9QEB IP=127.0.0.1 Method=GET Path="/api/v1/category?pagesize=&pagenum=" SpendTime="6 ms" status=200
+ntime +https://www.apipost.cn" DataSize=102 HostName=LAPTOP-86TU9QEB IP=127.0.0.1 Method=POST Path=/api/v1/upload SpendTime="287 ms" status=200

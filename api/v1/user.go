@@ -25,8 +25,8 @@ func AddUser(c *gin.Context) {
 	msg, code = validator.Validate(&data)
 	if code != errmsg.SUCCESS { //如果数据验证不成功 直接返回不进行下面的操作
 		c.JSON(http.StatusOK, gin.H{
-			"status": code,
-			"msg":    msg,
+			"status":  code,
+			"message": msg,
 		})
 		return
 	}
@@ -46,11 +46,23 @@ func AddUser(c *gin.Context) {
 }
 
 //查询单个用户
+func GetUserInfo(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	data, code := model.GetUser(id)
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    data,
+		"total":   1,
+		"message": errmsg.GetErrMsg(code),
+	})
+}
 
 //查询用户列表
 func GetUsers(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pagesize")) //query返回string转换成int
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+	username := c.Query("username")
 
 	if pageSize == 0 { //相当于不要这个分页功能 gorm提供了一个方法 如果给limit传-1就不做限制
 		pageSize = -1
@@ -59,7 +71,7 @@ func GetUsers(c *gin.Context) {
 		pageNum = -1
 	}
 
-	data, total := model.GetUsers(pageSize, pageNum)
+	data, total := model.GetUsers(username, pageSize, pageNum)
 	code = errmsg.SUCCESS
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
@@ -74,7 +86,7 @@ func EditUser(c *gin.Context) {
 	var data model.User
 	id, _ := strconv.Atoi(c.Param("id"))
 	c.ShouldBindJSON(&data)
-	code = model.CheckUser(data.Username) //重名判断
+	code = model.CheckUpUser(id, data.Username) //重名判断
 	if code == errmsg.SUCCESS {
 		model.EditUser(id, &data)
 	}

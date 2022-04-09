@@ -21,6 +21,13 @@ func CheckCategory(name string) (code int) {
 	return errmsg.SUCCESS
 }
 
+// 查询单个分类信息
+func GetCateInfo(id int) (Category, int) {
+	var cate Category
+	db.Where("id = ?", id).First(&cate)
+	return cate, errmsg.SUCCESS
+}
+
 //新增分类
 func CreateCategory(data *Category) int {
 	err := db.Create(&data).Error //入参是接口 返回是db模型所以用错误处理来接受

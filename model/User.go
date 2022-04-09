@@ -25,6 +25,19 @@ func CheckUser(name string) (code int) {
 	return errmsg.SUCCESS
 }
 
+// 更新查询  （供编辑用户使用 ）
+func CheckUpUser(id int, name string) (code int) {
+	var user User
+	db.Select("id, username").Where("username = ?", name).First(&user)
+	if user.ID == uint(id) {
+		return errmsg.SUCCESS
+	}
+	if user.ID > 0 {
+		return errmsg.ERROR_USERNAME_USED //1001
+	}
+	return errmsg.SUCCESS
+}
+
 //新增用户
 func CreateUser(data *User) int {
 	data.Password = ScryptPw(data.Password)
@@ -36,14 +49,32 @@ func CreateUser(data *User) int {
 }
 
 //查询用户列表 分页处理 要不然一次很多容易卡顿
-func GetUsers(pageSize int, pageNum int) ([]User, int) {
+func GetUsers(username string, pageSize int, pageNum int) ([]User, int) {
 	var users []User
 	var total int
-	err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&users).Count(&total).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, 0
+
+	if username != "" {
+		db.Select("id,username,role").Where(
+			"username LIKE ?", username+"%",
+		).Find(&users).Count(&total).Limit(pageSize).Offset((pageNum - 1) * pageSize)
+		return users, total
+	}
+	db.Select("id,username,role").Find(&users).Count(&total).Limit(pageSize).Offset((pageNum - 1) * pageSize)
+	if err == gorm.ErrRecordNotFound {
+		return users, 0
 	}
 	return users, total
+}
+
+// 查询单个用户
+func GetUser(id int) (User, int) {
+	var user User
+	err = db.Where("ID = ?", id).First(&user).Error
+	if err != nil {
+		return user, errmsg.ERROR
+	}
+	return user, errmsg.SUCCESS
+
 }
 
 //编辑用户

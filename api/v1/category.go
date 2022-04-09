@@ -51,6 +51,19 @@ func GetCategory(c *gin.Context) {
 	})
 }
 
+// 查询单个分类根据Id
+func GetCateInfo(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	data, code := model.GetCateInfo(id)
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    data,
+		"message": errmsg.GetErrMsg(code),
+	})
+}
+
 //编辑分类名
 func EditCategory(c *gin.Context) {
 	var data model.Category

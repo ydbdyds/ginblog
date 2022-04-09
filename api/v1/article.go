@@ -58,6 +58,7 @@ func GetArticleInfo(c *gin.Context) {
 func GetArticle(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pagesize")) //query返回string转换成int
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+	title := c.Query("title")
 
 	if pageSize == 0 { //相当于不要这个分页功能 gorm提供了一个方法 如果给limit传-1就不做限制
 		pageSize = -1
@@ -66,7 +67,7 @@ func GetArticle(c *gin.Context) {
 		pageNum = -1
 	}
 
-	data, code, total := model.GetArticle(pageSize, pageNum)
+	data, code, total := model.GetArticle(title, pageSize, pageNum)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    data,

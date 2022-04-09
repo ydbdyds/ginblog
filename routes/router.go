@@ -34,11 +34,13 @@ func InitRouter() {
 	{
 		router.POST("user/add", v1.AddUser)
 		router.GET("users", v1.GetUsers)
+		router.GET("user/:id", v1.GetUserInfo) //查询单个用户
 		router.GET("category", v1.GetCategory)
 		router.GET("articles", v1.GetArticle)
 		router.GET("article/list/:id", v1.GetCategoryArt) //分类下的文章
 		router.GET("article/info/:id", v1.GetArticleInfo) //查询文章详情
 		router.POST("login", v1.Login)                    //登陆接口
+		router.GET("category/:id", v1.GetCateInfo)        //查询单个分类
 	}
 
 	r.Run(utils.HttpPort) //跑在这个端口

@@ -18,6 +18,7 @@
             v-model="formdata.password"
             placeholder="请输入密码"
             type="password"
+            v-on:keyup.enter="login"
           >
             <a-icon slot="prefix" type="lock" style="color:rgba(0,0,0,.25)" />
           </a-input>
@@ -76,7 +77,7 @@ export default {
         const { data: res } = await this.$http.post('login', this.formdata)
         if (res.status != 200) return this.$message.error(res.message)
         window.sessionStorage.setItem('token', res.token)
-        this.$router.push('admin')
+        this.$router.push('admin/index')
       })
     }
   }

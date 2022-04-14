@@ -46,7 +46,12 @@
           </a-upload>
         </a-form-model-item>
         <a-form-model-item label="文章内容" prop="content">
-          <Editor v-model="artInfo.content"></Editor>
+          <a-radio-group v-model="artInfo.editormode">
+            <a-radio :value="1">富文本编辑器</a-radio>
+            <a-radio :value="2">MarkDown编辑器</a-radio>
+          </a-radio-group>
+          <Editor v-show="artInfo.editormode===1" v-model="artInfo.content"></Editor>
+          <mavon-editor v-show="artInfo.editormode===2" v-model="artInfo.content"></mavon-editor>
         </a-form-model-item>
         <a-form-model-item>
           <a-button
@@ -76,7 +81,8 @@ export default {
         cid: undefined,
         desc: '',
         content: '',
-        img: ''
+        img: '',
+        editormode: 1
       },
       Catelist: [],
       upUrl: Url + 'upload', //拼接上传地址

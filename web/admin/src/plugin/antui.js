@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, FormModel, Input, Icon, message, Layout, Menu, Card, Table, Row, Col, ConfigProvider, Modal, Select, Switch ,Upload} from 'ant-design-vue'
+import { Button, FormModel, Input, Icon, message, Layout, Menu, Card, Table, Row, Col, ConfigProvider, Modal, Select, Switch , Upload, Radio} from 'ant-design-vue'
 
 message.config({
   top: `60px`,
@@ -26,3 +26,4 @@ Vue.use(Modal)
 Vue.use(Select)
 Vue.use(Switch)
 Vue.use(Upload)
+Vue.use(Radio)

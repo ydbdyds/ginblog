@@ -4,21 +4,36 @@ import (
 	v1 "ginblog/api/v1"
 	"ginblog/middleware"
 	"ginblog/utils"
+	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 )
+
+func createMyRender() multitemplate.Renderer {
+	p := multitemplate.NewRenderer()
+	p.AddFromFiles("index", "static/admin/index.html")
+	p.AddFromFiles("front", "static/front/front.html")
+	return p
+}
 
 func InitRouter() {
 	gin.SetMode(utils.AppMode)
 	r := gin.New() //路由初始化
+	r.HTMLRender = createMyRender()
 	r.Use(middleware.Logger())
 	r.Use(middleware.Cors())
 	r.Use(gin.Recovery())
 	//托管前端
-	r.LoadHTMLGlob("static/admin/index.html")
-	r.Static("admin/static", "static/admin/static") //路由路径 文件路径
-	r.StaticFile("admin/favicon.ico", "static/admin/favicon.ico")
-	r.GET("admin", func(c *gin.Context) {
-		c.HTML(200, "index.html", nil)
+	r.Static("/css", "./static/front/css")
+	r.Static("/js", "./static/front/js")
+	r.Static("/admin", "./static/admin")
+	r.StaticFile("/favicon.ico", "static/front/favicon.ico")
+
+	r.GET("/admin", func(c *gin.Context) {
+		c.HTML(200, "index", nil)
+	})
+
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(200, "front", nil)
 	})
 
 	auth := r.Group("api/v1") //在这个组内需要jwt中间件

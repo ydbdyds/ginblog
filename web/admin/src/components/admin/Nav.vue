@@ -28,6 +28,11 @@
       <a-menu-item key="userlist"
         ><a-icon type="user" /><span>用户列表</span></a-menu-item
       >
+
+      <a-menu-item key="profile"
+        ><a-icon type="setting" /><span>个人信息</span></a-menu-item
+      >
+
     </a-menu>
   </a-layout-sider>
 </template>
@@ -41,7 +46,7 @@ export default {
   },
     methods: {
     goToPage(item) {
-      this.$router.push('/admin/' + item.key).catch((err) => err)
+      this.$router.push('/' + item.key).catch((err) => err)
     },
   },
 }

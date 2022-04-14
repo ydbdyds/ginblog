@@ -26,8 +26,8 @@ func InitDb() {
 		fmt.Printf("连接数据库失败,检查参数!", err)
 	}
 
-	db.SingularTable(true)                           //单数模式
-	db.AutoMigrate(&User{}, &Article{}, &Category{}) //数据库迁移  自动根据model建表 但是他会自动是复数
+	db.SingularTable(true)                                       //单数模式
+	db.AutoMigrate(&User{}, &Article{}, &Category{}, &Profile{}) //数据库迁移  自动根据model建表 但是他会自动是复数
 
 	// SetMaxIdleConns 设置空闲连接池中的最大连接数。
 	db.DB().SetMaxIdleConns(10)

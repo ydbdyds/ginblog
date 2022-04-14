@@ -145,7 +145,7 @@ export default {
             this.artInfo
           )
           if (res.status !== 200) return this.$message.error(res.message)
-          this.$router.push('/admin/artlist')
+          this.$router.push('/artlist')
           this.$message.success('添加文章成功')
         } else {
           const { data: res } = await this.$http.put(
@@ -154,7 +154,7 @@ export default {
           )
           if (res.status !== 200) return this.$message.error(res.message)
 
-          this.$router.push('/admin/artlist')
+          this.$router.push('/artlist')
           this.$message.success('更新文章成功')
         }
       })

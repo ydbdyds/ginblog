@@ -28,7 +28,8 @@ func CreateArticle(data *Article) int {
 func GetCategoryArt(id int, pageSize int, pageNum int) ([]Article, int, int) {
 	var articleList []Article
 	var total int
-	err := db.Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Where("Cid = ?", id).Find(&articleList).Count(&total).Error
+	db.Preload("Category").Where("cid =?", id).Find(&articleList).Count(&total)
+	err := db.Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Where("Cid = ?", id).Find(&articleList).Error
 	if err != nil {
 		return nil, errmsg.ERROR_CATE_NOT_EXIT, 0
 	}
@@ -46,12 +47,12 @@ func GetArticleInfo(id int) (Article, int) {
 }
 
 //查询文章列表 分页处理 要不然一次很多容易卡顿 通过预加载来加载关联 查找article时就预加载相关分类  通过order实现更新时间排序
-func GetArticle(title string, pageSize int, pageNum int) ([]Article, int, int) {
+func GetArticle(title string, pageSize int, pageNum int) ([]Article, int, int64) {
 	var articleList []Article
 	var err error
-	var total int
+	var total int64
 	if title == "" {
-		err = db.Order("Updated_At DESC").Preload("Category").Find(&articleList).Limit(pageSize).Offset((pageNum - 1) * pageSize).Error
+		err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Order("Created_At DESC").Preload("Category").Find(&articleList).Error
 		// 单独计数
 		db.Model(&articleList).Count(&total)
 		if err != nil && err != gorm.ErrRecordNotFound {
@@ -59,9 +60,7 @@ func GetArticle(title string, pageSize int, pageNum int) ([]Article, int, int) {
 		}
 		return articleList, errmsg.SUCCESS, total
 	}
-	err = db.Order("Updated_At DESC").Preload("Category").Where(
-		"title LIKE ?", title+"%",
-	).Find(&articleList).Limit(pageSize).Offset((pageNum - 1) * pageSize).Error
+	err = db.Limit(pageSize).Offset((pageNum-1)*pageSize).Order("Created_At DESC").Preload("Category").Where("title LIKE ?", title+"%").Find(&articleList).Error
 	// 单独计数
 	db.Model(&articleList).Where("title LIKE ?", title+"%").Count(&total)
 	if err != nil && err != gorm.ErrRecordNotFound {

@@ -13,7 +13,7 @@
           />
         </a-col>
         <a-col :span="4">
-          <a-button type="primary" @click="$router.push('/admin/addart')"
+          <a-button type="primary" @click="$router.push('/addart')"
             >新增</a-button
           >
         </a-col>
@@ -52,7 +52,7 @@
               type="primary"
               icon="edit"
               style="margin-right:15px"
-              @click="$router.push(`/admin/addart/${data.ID}`)"
+              @click="$router.push(`/addart/${data.ID}`)"
               >编辑</a-button
             >
             <a-button

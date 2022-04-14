@@ -9,6 +9,7 @@ import AddArt from '../components/article/AddArt.vue'
 import ArtList from '../components/article/ArtList.vue'
 import CateList from '../components/category/CateList.vue'
 import UserList from '../components/user/UserList.vue'
+import Profile from '../components/user/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -19,7 +20,7 @@ const routes = [
     component: Login
   },
   {
-    path: '/admin',
+    path: '/',
     name: 'admin',
     component: Admin,
     children: [
@@ -28,7 +29,8 @@ const routes = [
       { path: 'addart/:id', component: AddArt, props : true },
       { path: 'artlist', component: ArtList },
       { path: 'catelist', component: CateList },
-      { path: 'userlist', component: UserList }
+      { path: 'userlist', component: UserList },
+      { path: 'profile', component: Profile },
     ]
   }
 ]
@@ -41,7 +43,7 @@ router.beforeEach((to, from, next) => {
   //配置导航守卫
   const token = window.sessionStorage.getItem('token')
   if (to.path === '/login') return next() //login不需要token
-  if (!token && to.path === '/admin') {
+  if (!token) {
     //如果没有token并且要访问admin 强制返回login 要么就放行
     next('/login')
   } else {

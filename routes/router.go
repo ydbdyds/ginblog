@@ -53,6 +53,10 @@ func InitRouter() {
 		auth.POST("upload", v1.Upload)               //上传文件
 		//个人设置
 		auth.PUT("profile/:id", v1.UpdateProfile)
+		//评论
+		auth.POST("addcomment", v1.AddComment)
+		auth.DELETE("delcomment/:id", v1.DeleteComment)
+		auth.PUT("checkcomment/:id", v1.Checkcomment)
 	}
 	router := r.Group("api/v1")
 	{
@@ -67,6 +71,9 @@ func InitRouter() {
 		router.GET("category/:id", v1.GetCateInfo)        //查询单个分类
 		//个人信息
 		router.GET("profile/:id", v1.GetProfile)
+		//公用评论
+		router.GET("comment", v1.GetCommentList)
+		router.GET("comment/:id", v1.GetArtComment)
 	}
 
 	r.Run(utils.HttpPort) //跑在这个端口

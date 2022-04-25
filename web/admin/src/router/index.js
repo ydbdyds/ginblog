@@ -10,6 +10,7 @@ import ArtList from '../components/article/ArtList.vue'
 import CateList from '../components/category/CateList.vue'
 import UserList from '../components/user/UserList.vue'
 import Profile from '../components/user/Profile.vue'
+import CommentList from '../components/comment/commentList.vue'
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,7 @@ const routes = [
       { path: 'catelist', component: CateList },
       { path: 'userlist', component: UserList },
       { path: 'profile', component: Profile },
+      { path: 'commentlist',component: CommentList},
     ]
   }
 ]

@@ -1,7 +1,7 @@
 <template>
   <a-layout-sider breakpoint="lg" v-model="collapsed">
     <div class="logo">
-      <span>{{ collapsed ? '博客' : '风起的博客'}}</span>
+      <span>{{ collapsed ? '博客' : '风起的博客' }}</span>
     </div>
 
     <a-menu
@@ -29,10 +29,13 @@
         ><a-icon type="user" /><span>用户列表</span></a-menu-item
       >
 
+      <a-menu-item key="commentlist"
+        ><a-icon type="message" /><span>评论管理</span></a-menu-item
+      >
+
       <a-menu-item key="profile"
         ><a-icon type="setting" /><span>个人信息</span></a-menu-item
       >
-
     </a-menu>
   </a-layout-sider>
 </template>
@@ -44,14 +47,13 @@ export default {
       collapsed: false
     }
   },
-    methods: {
+  methods: {
     goToPage(item) {
-      this.$router.push('/' + item.key).catch((err) => err)
-    },
-  },
+      this.$router.push('/' + item.key).catch(err => err)
+    }
+  }
 }
 </script>
-
 
 <style scoped>
 .logo {

@@ -1,10 +1,10 @@
 <template>
   <v-col>
-    <v-card class="ma-3" v-for="item in artList" :key="item.id" link @click="$router.push(`/detail/${item.ID}`)"> 
+    <v-card class="ma-3 d-flex flex-no-wrap justify-space-between align-center" v-for="item in artList" :key="item.id" link @click="$router.push(`/detail/${item.ID}`)"> 
       <v-row no-gutters>
-        <v-col class="d-flex justify-center align-center mx-3" cols="1">
-          <v-img max-height="100" max-width="100" :src="item.img"></v-img>
-        </v-col>
+        <v-avatar class="ma-3 hidden-sm-and-down" size="125" tile>
+        <v-img :src="item.img"></v-img>
+      </v-avatar>
         <v-col>
           <v-card-title class="my-2"
             ><v-chip color="pink" label class="mr-3 white--text"

@@ -55,7 +55,7 @@ func CheckToken(token string) (*MyClaims, int) {
 //jwt中间件
 func JwtToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		tokenHeader := c.Request.Header.Get("Authorization") //拿到请求头
+		tokenHeader := c.Request.Header.Get("authorization") //拿到请求头
 
 		if tokenHeader == "" { //如果请求为空
 			code = errmsg.ERROR_TOKEN_EXIST

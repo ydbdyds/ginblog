@@ -5,6 +5,9 @@
     <v-main class="grey lighten-3">
       <v-container>
         <v-row>
+          <v-col cols="3">
+    
+          </v-col>
           <v-col>
             <v-sheet max-width="65vw" min-height="80vh" rounded="lg">
               <router-view :key="$route.path"></router-view>

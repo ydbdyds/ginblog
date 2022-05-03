@@ -22,6 +22,9 @@ var (
 	SecretKey  string
 	Bucket     string
 	QiniuSever string
+
+	Host string
+	Port string
 )
 
 func init() { //使用ini的库做一个处理
@@ -32,6 +35,7 @@ func init() { //使用ini的库做一个处理
 	LoadServer(file)
 	LoadData(file)
 	LoadQiniu(file)
+	LoadRedis(file)
 }
 
 func LoadServer(file *ini.File) {
@@ -54,4 +58,9 @@ func LoadQiniu(file *ini.File) { //对象存储配置
 	SecretKey = file.Section("qiniu").Key("SecretKey").String()
 	Bucket = file.Section("qiniu").Key("Bucket").String()
 	QiniuSever = file.Section("qiniu").Key("QiniuSever").String()
+}
+
+func LoadRedis(file *ini.File) {
+	Host = file.Section("redis").Key("Host").MustString("localhost")
+	Port = file.Section("redis").Key("Port").MustString("6379")
 }

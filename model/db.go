@@ -1,8 +1,10 @@
 package model
 
 import (
+	"context"
 	"fmt"
 	"ginblog/utils"
+	"github.com/go-redis/redis/v8"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"time"
@@ -10,6 +12,7 @@ import (
 
 var db *gorm.DB
 var err error
+var rdb *redis.Client
 
 //处理连接数据库
 
@@ -21,6 +24,15 @@ func InitDb() {
 		utils.DbPort,
 		utils.DbName,
 	))
+
+	rdb = redis.NewClient(&redis.Options{
+		Addr:     fmt.Sprintf("%s:%s", utils.Host, utils.Port),
+		Password: "",
+		DB:       0,
+		PoolSize: 100,
+	})
+
+	_, err = rdb.Ping(context.TODO()).Result()
 
 	if err != nil {
 		fmt.Printf("连接数据库失败,检查参数!", err)

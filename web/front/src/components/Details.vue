@@ -126,7 +126,18 @@ export default {
       this.total = res.total
     },
     // 发送评论
-    async pushComment() {}
+    async pushComment() {
+      const {data:res} =await this.$http.post('addcomment',{
+        aid: parseInt(this.id),
+        content: this.comment.content,
+        uid:parseInt(this.headers.uid),
+        username:this.headers.username
+      })
+      if (res.status !== 200) return this.$message.error(res.message)
+      this.$message.success('评论成功，待审核后显示')
+      this.$router.go(0)
+
+    }
 
 
   },

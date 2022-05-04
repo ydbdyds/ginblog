@@ -9,7 +9,7 @@ import (
 func main() {
 	//引用数据库
 	model.InitDb()
-	task.ExecuteCron()
+	task.ExecuteCron() //执行定时任务
 	routes.InitRouter()
 
 }

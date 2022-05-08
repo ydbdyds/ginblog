@@ -39,6 +39,14 @@ func GetCategoryArt(id int, pageSize int, pageNum int) ([]Article, int, int) {
 	if err != nil {
 		return nil, errmsg.ERROR_CATE_NOT_EXIT, 0
 	}
+	for i, a := range articleList { //查看redis缓存是否有数据
+		redisCnt := GetView(&a)
+		//fmt.Println(a)
+		if redisCnt > 0 {
+			articleList[i].View += redisCnt
+		}
+	}
+
 	return articleList, errmsg.SUCCESS, total
 }
 
